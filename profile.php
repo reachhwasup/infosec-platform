@@ -111,11 +111,11 @@ $total_bookmarked = $select_bookmark->rowCount();
 
 <!-- footer section starts  -->
 
-<footer class="footer">
+<!-- <footer class="footer">
 
    &copy; copyright @ 2022 by <span>mr. web designer</span> | all rights reserved!
 
-</footer>
+</footer> -->
 
 <!-- footer section ends -->
 

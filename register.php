@@ -19,6 +19,8 @@ if(isset($_POST['submit'])){
    $pass = filter_var($pass, FILTER_SANITIZE_STRING);
    $cpass = sha1($_POST['cpass']);
    $cpass = filter_var($cpass, FILTER_SANITIZE_STRING);
+   $position = ($_POST['position']);
+   $position = filter_var($position, FILTER_SANITIZE_STRING);
 
    $image = $_FILES['image']['name'];
    $image = filter_var($image, FILTER_SANITIZE_STRING);
@@ -32,13 +34,13 @@ if(isset($_POST['submit'])){
    $select_user->execute([$email]);
    
    if($select_user->rowCount() > 0){
-      $message[] = 'email already taken!';
+      $message[] = 'Email already taken!';
    }else{
       if($pass != $cpass){
-         $message[] = 'confirm passowrd not matched!';
+         $message[] = 'Password did not match!';
       }else{
-         $insert_user = $conn->prepare("INSERT INTO `users`(id, name, email, password, image) VALUES(?,?,?,?,?)");
-         $insert_user->execute([$id, $name, $email, $cpass, $rename]);
+         $insert_user = $conn->prepare("INSERT INTO `users`(id, name, email, password, position, image) VALUES(?,?,?,?,?,?)");
+         $insert_user->execute([$id, $name, $email, $cpass, $position, $rename]);
          move_uploaded_file($image_tmp_name, $image_folder);
          
          $verify_user = $conn->prepare("SELECT * FROM `users` WHERE email = ? AND password = ? LIMIT 1");
@@ -81,24 +83,24 @@ if(isset($_POST['submit'])){
       <h3>create account</h3>
       <div class="flex">
          <div class="col">
-            <p>your name <span>*</span></p>
-            <input type="text" name="name" placeholder="eneter your name" maxlength="50" required class="box">
-            <p>your email <span>*</span></p>
-            <input type="email" name="email" placeholder="enter your email" maxlength="20" required class="box">
+            <p>FullName<span>*</span></p>
+            <input type="text" name="name" placeholder="Enter your name" maxlength="50" required class="box">
+            <p>Email <span>*</span></p>
+            <input type="email" name="email" placeholder="Enter your email" maxlength="20" required class="box">
          </div>
          <div class="col">
-            <p>your password <span>*</span></p>
-            <input type="password" name="pass" placeholder="enter your password" maxlength="20" required class="box">
-            <p>confirm password <span>*</span></p>
-            <input type="password" name="cpass" placeholder="confirm your password" maxlength="20" required class="box">
+            <p>Password <span>*</span></p>
+            <input type="password" name="pass" placeholder="Enter your password" maxlength="20" required class="box">
+            <p>Confirm password <span>*</span></p>
+            <input type="password" name="cpass" placeholder="Confirm your password" maxlength="20" required class="box">
          </div>
       </div>
       <div>
-      <p>Position <span>*</span></p>
-      <input type="password" name="pass" placeholder="enter your position" maxlength="20" required class="box">
+      <p>Position<span>*</span></p>
+      <input type="text" name="position" placeholder="Enter your position" maxlength="20" required class="box">
       </div>
-      <p>select pic <span>*</span></p>
-      <input type="file" name="image" accept="image/*" required class="box">
+      <p>Upload Profile Picture</p>
+      <input type="file" name="image" accept="image/*"  class="box">
       <p class="link">already have an account? <a href="login.php">login now</a></p>
       <input type="submit" name="submit" value="register now" class="btn">
    </form>
